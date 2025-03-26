@@ -1,6 +1,6 @@
-Dieses Shell-Script richtet einen Debian-Server automatisiert und interaktiv ein – mit Fokus auf Heimserver, Docker, Tailscale, VDSM, ipv64.net und mehr.
+## Dieses Shell-Script richtet einen Debian-Server automatisiert und interaktiv ein – mit Fokus auf Heimserver, Docker, Tailscale, VDSM, ipv64.net und mehr.
 
-Features
+## Features
 
 - Optional: statische IP-Adresse konfigurieren
 - System-Update & Upgrade
@@ -40,7 +40,7 @@ Features
 ```
 nano setup.sh
 ```
-Dann den Inhalt des Scripts von GitHub kopieren und in nano einfügen
+Dann den Inhalt des Scripts von GitHub kopieren und einfügen
 Datei speichern mit Ctrl + O, schließen mit Ctrl + X
 ```
 chmod +x setup.sh
@@ -65,6 +65,10 @@ Bei Fragen, Verbesserungsvorschlägen oder Pull Requests freue ich mich.
 
 
 
+
+
+
+
 ## ⚠️ Hinweis zur Nutzung
 
 Dieses Skript wird ohne jegliche Garantie bereitgestellt und dient ausschließlich zu Lern-, Test- und Demonstrationszwecken.  
@@ -78,7 +82,7 @@ Der Autor (alias „ra5on“) übernimmt keine Verantwortung für:
 
 ---
 
-🧩 Drittsoftware & Rechte
+## 🧩 Drittsoftware & Rechte
 
 Dieses Skript kann Drittsoftware installieren oder konfigurieren  
 (z. B. Docker, Tailscale, AdGuard, VDSM usw.).
@@ -92,7 +96,7 @@ Der Autor:
 
 ---
 
-❗ Lizenzbedingungen beachten
+## ❗ Lizenzbedingungen beachten
 
 Die Nutzung oder Weitergabe dieses Skripts bedeutet **keine Übertragung von Nutzungsrechten oder Garantien**.
 

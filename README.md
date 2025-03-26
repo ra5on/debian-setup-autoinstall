@@ -35,12 +35,14 @@ Beispielhafte Zusammenfassung:
 
 Installation
 
-# nano setup.sh
-- Dann den Inhalt des Scripts von GitHub kopieren und in nano einfügen
+<pre lang="bash"><code>```bash
+nano setup.sh
+# Dann den Inhalt des Scripts von GitHub kopieren und in nano einfügen.
 # Datei speichern und schließen.
 
-# chmod +x setup.sh
-# ./setup.sh
+chmod +x setup.sh
+./setup.sh
+```</code></pre>
 
 
 Voraussetzungen

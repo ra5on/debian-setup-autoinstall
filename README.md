@@ -47,6 +47,8 @@ Dann den Inhalt des Scripts von GitHub kopieren und einfügen
 Datei speichern mit Ctrl + O, schließen mit Ctrl + X
 ```
 chmod +x setup.sh
+```
+```
 ./setup.sh
 ```
 

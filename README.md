@@ -23,7 +23,7 @@ Features
 
 ### 🧾 Beispielhafte Zusammenfassung:
 
-```text
+```
 ╔════════════════════════════════════╗
 ║         SETUP-ZUSAMMENFASSUNG     ║
 ╚════════════════════════════════════╝
@@ -34,17 +34,18 @@ Features
 ✅ Docker Compose installiert
 🟢 Portainer läuft unter https://192.168.x.x:9443
 🔁 DynDNS aktiv für beispiel.ipv64.net (alle 5 Min)
+```
 
-
-## 🛠️ Installation (manuell)
-
+### 🛠️ Installation (manuell)
+```
 nano setup.sh
+```
 # Dann den Inhalt des Scripts von GitHub kopieren und in nano einfügen
 # Datei speichern mit Ctrl + O, schließen mit Ctrl + X
-
+```
 chmod +x setup.sh
 ./setup.sh
-
+```
 
 Voraussetzungen
 

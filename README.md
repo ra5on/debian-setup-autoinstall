@@ -21,7 +21,7 @@ Features
 
 ---
 
-### 🧾 Beispielhafte Zusammenfassung:
+## 🧾 Beispielhafte Zusammenfassung:
 
 ```
 ╔════════════════════════════════════╗
@@ -36,24 +36,24 @@ Features
 🔁 DynDNS aktiv für beispiel.ipv64.net (alle 5 Min)
 ```
 
-### 🛠️ Installation (manuell)
+## 🛠️ Installation (manuell)
 ```
 nano setup.sh
 ```
-# Dann den Inhalt des Scripts von GitHub kopieren und in nano einfügen
-# Datei speichern mit Ctrl + O, schließen mit Ctrl + X
+Dann den Inhalt des Scripts von GitHub kopieren und in nano einfügen
+Datei speichern mit Ctrl + O, schließen mit Ctrl + X
 ```
 chmod +x setup.sh
 ./setup.sh
 ```
 
-Voraussetzungen
+## Voraussetzungen
 
 - Debian 12 ("Bookworm") empfohlen
 - Root-Rechte ("sudo" oder direkt als root)
 - Aktive Internetverbindung
 
-Motivation
+## Motivation
 
 Das Ziel dieses Scripts ist es, einen neuen Debian-Server in wenigen Minuten vollständig einsatzbereit zu machen – ohne Copy-Paste, ohne ständiges Googlen und mit maximaler Transparenz.
 
@@ -65,7 +65,7 @@ Bei Fragen, Verbesserungsvorschlägen oder Pull Requests freue ich mich.
 
 
 
-⚠️ Hinweis zur Nutzung
+## ⚠️ Hinweis zur Nutzung
 
 Dieses Skript wird ohne jegliche Garantie bereitgestellt und dient ausschließlich zu Lern-, Test- und Demonstrationszwecken.  
 Die Ausführung erfolgt auf eigene Gefahr.

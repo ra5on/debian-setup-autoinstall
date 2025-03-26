@@ -266,15 +266,26 @@ if [[ "$tailscale_install" == "j" ]]; then
     sudo sysctl -p
   fi
 
-  # Tailscale starten
-  echo -e "\n🚀 Starte Tailscale mit deiner Konfiguration..."
-  sudo tailscale up $advertise_arg $exitnode_arg $dns_arg
+  # Zusammenfassung anzeigen
+  echo -e "\n🚀 Tailscale wird mit folgenden Optionen gestartet:"
+  [[ -n "$advertise_arg" ]] && echo "   ➤ Subnet Routing: ${advertise_arg#--advertise-routes=}"
+  [[ -n "$exitnode_arg" ]] && echo "   ➤ Exit Node: aktiviert"
+  echo "   ➤ DNS: $( [[ "$dns_arg" == "--accept-dns=true" ]] && echo "aktiviert" || echo "deaktiviert" )"
 
-  echo -e "\n✅ Tailscale wurde gestartet. Jetzt ggf. im Browser autorisieren."
+  echo -n "Möchtest du Tailscale jetzt mit diesen Einstellungen starten? (j/n): "
+  read -r confirm_tailscale
+  if [[ "$confirm_tailscale" == "j" ]]; then
+    sudo tailscale up $advertise_arg $exitnode_arg $dns_arg
+    echo -e "\n✅ Tailscale wurde gestartet. Jetzt ggf. im Browser autorisieren."
+  else
+    echo -e "⏩ Start von Tailscale wurde abgebrochen."
+  fi
+
+  # Zusammenfassungszeile für Ausgabe
+  [[ "$tailscale_install" == "j" ]] && echo -e "\n🟢 Tailscale läuft $( [[ -n "$advertise_arg" ]] && echo "| Subnet Routing aktiv" ) $( [[ "$exitnode_answer" == "j" ]] && echo "| Exit Node" ) $( [[ "$dns_answer" == "j" ]] && echo "| DNS aktiv" || echo "| DNS aus" )"
 else
   echo "⏩ Tailscale wird nicht installiert."
 fi
-
 
 # --- DynDNS mit ipv64.net ---
 echo -n "Möchtest du DynDNS mit ipv64.net einrichten? (j/n): "

@@ -19,6 +19,11 @@ Features
 - Übersichtliche Zusammenfassung am Ende
 
 
+---
+
+### ✅ Korrekt für die Beispiel-Zusammenfassung:
+
+```markdown
 ### Beispielhafte Zusammenfassung:
 
 ```text
@@ -34,16 +39,15 @@ Features
 🔁 DynDNS aktiv für beispiel.ipv64.net (alle 5 Min)
 
 
-Installation
+## 🛠️ Installation (manuell)
 
-<pre lang="bash"><code>```bash
+```bash
 nano setup.sh
-# Dann den Inhalt des Scripts von GitHub kopieren und in nano einfügen.
-# Datei speichern und schließen.
+# Dann den Inhalt des Scripts von GitHub kopieren und in nano einfügen
+# Datei speichern mit Ctrl + O, schließen mit Ctrl + X
 
 chmod +x setup.sh
 ./setup.sh
-```</code></pre>
 
 
 Voraussetzungen

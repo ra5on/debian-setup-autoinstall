@@ -1,9 +1,7 @@
 ## Dieses Shell-Script richtet einen Debian-Server automatisiert und interaktiv ein – mit Fokus auf Heimserver, Docker, Tailscale, VDSM, ipv64.net und mehr.
 
-```
-## Hinweis: Derzeit wird Docker (inkl. Docker Compose) nur auf ARM64-Systemen unterstützt. Eine Version für AMD64 ist in Arbeit.
 
-```
+## Hinweis: Derzeit wird Docker (inkl. Docker Compose) nur auf ARM64-Systemen unterstützt. Eine Version für AMD64 ist in Arbeit.
 
 ## Features
 

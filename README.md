@@ -19,10 +19,11 @@ Features
 - Übersichtliche Zusammenfassung am Ende
 
 
-Beispielhafte Zusammenfassung:
+### Beispielhafte Zusammenfassung:
 
+```text
 ╔════════════════════════════════════╗
-║         SETUP-ZUSAMMENFASSUNG      ║
+║         SETUP-ZUSAMMENFASSUNG     ║
 ╚════════════════════════════════════╝
 🌐 Statische IP gesetzt: 192.168.x.x/24
 🛣  Gateway: 192.168.x.1

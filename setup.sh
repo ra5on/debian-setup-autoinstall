@@ -17,7 +17,7 @@ if [[ "$static_ip_choice" == "j" ]]; then
     detected_gw=$(ip route | grep default | awk '{print $3}')
     echo -e "${GREEN}Gefundenes Gateway: $detected_gw${RESET}"
 
-    read -p "Statische IP (z. B. 192.168.10.100/24): " static_ip
+    read -p "Statische IP (z. B. 192.168.178.100/24): " static_ip
     read -p "Gateway [$detected_gw]: " custom_gw
     gateway=${custom_gw:-$detected_gw}
 
@@ -40,9 +40,15 @@ else
     echo -e "${RED}Statische IP wird nicht gesetzt.${RESET}"
 fi
 
-# --- System-Update & Upgrade ---
-echo -e "${GREEN}System wird aktualisiert...${RESET}"
-sudo apt update && sudo apt upgrade -y
+# ── System aktualisieren ──────────────────────────────────────
+echo -n "Möchtest du ein Update und Upgrade durchführen? (j/n): "
+read -r update_system
+if [[ "$update_system" == "j" ]]; then
+  echo -e "\n🔄 System wird aktualisiert..."
+  sudo apt update && sudo apt upgrade -y
+else
+  echo "⏩ System-Update übersprungen."
+fi
 
 # Funktion zum Installieren von APT-Paketen
 installiere_paket() {
@@ -192,38 +198,83 @@ EOF
     fi
 fi
 
-# --- Tailscale ---
+# ── Tailscale ──────────────────────────────────────────────────
 echo -n "Möchtest du Tailscale installieren und einrichten? (j/n): "
 read -r tailscale_install
 if [[ "$tailscale_install" == "j" ]]; then
-    curl -fsSL https://tailscale.com/install.sh | sh
 
-    advertise_arg=""
-    exitnode_arg=""
-    dns_arg=""
+  # curl installieren falls nicht vorhanden
+  if ! command -v curl >/dev/null 2>&1; then
+    echo -e "\n⚠️  'curl' ist nicht installiert. Wird jetzt automatisch installiert..."
+    sudo apt update && sudo apt install -y curl
+  fi
 
-    echo -n "Welches Subnetz soll für Tailscale freigegeben werden (z. B. 192.168.10.0/24)? (leer = kein Subnet-Routing): "
-    read -r user_subnet
-    [[ -n "$user_subnet" ]] && advertise_arg="--advertise-routes=${user_subnet}"
+  # Tailscale installieren
+  curl -fsSL https://tailscale.com/install.sh | sh
 
-    echo -n "Als Exit Node fungieren? (j/n): "
-    read -r exitnode_answer
-    [[ "$exitnode_answer" == "j" ]] && exitnode_arg="--advertise-exit-node"
+  # Parameter vorbereiten
+  advertise_arg=""
+  exitnode_arg=""
+  dns_arg=""
 
-    echo -n "Tailscale DNS aktivieren? (j/n): "
-    read -r dns_answer
-    [[ "$dns_answer" == "j" ]] && dns_arg="--accept-dns=true" || dns_arg="--accept-dns=false"
+  # Subnet-Routing abfragen (inkl. Vorschlag & Validierung)
+  echo -n "Möchtest du Subnet-Routing aktivieren? (j/n): "
+  read -r subnet_enable
 
-    echo -e "${GREEN}Aktiviere IPv4 & IPv6 Forwarding...${RESET}"
-    sudo sysctl -w net.ipv4.ip_forward=1
-    sudo sysctl -w net.ipv6.conf.all.forwarding=1
-    sudo sed -i 's/^#\?net.ipv4.ip_forward=.*/net.ipv4.ip_forward=1/' /etc/sysctl.conf
-    sudo sed -i 's/^#\?net.ipv6.conf.all.forwarding=.*/net.ipv6.conf.all.forwarding=1/' /etc/sysctl.conf
+  if [[ "$subnet_enable" == "j" ]]; then
+    auto_subnet=$(ip -o -f inet addr show | awk '/scope global/ {
+        split($4, a, "/");
+        split(a[1], ip, ".");
+        printf "%s.%s.%s.0/24", ip[1], ip[2], ip[3];
+        exit
+    }')
+    echo -e "\n🔍 Vorgeschlagenes Subnetz: ${auto_subnet}"
+    echo -n "Möchtest du dieses Subnetz verwenden? (j/n): "
+    read -r use_auto_subnet
 
-    sudo systemctl enable --now tailscaled
-    sudo tailscale up $advertise_arg $exitnode_arg $dns_arg
-    echo -e "${GREEN}Tailscale wurde gestartet. Jetzt ggf. im Browser autorisieren.${RESET}"
+    if [[ "$use_auto_subnet" == "j" ]]; then
+      advertise_arg="--advertise-routes=${auto_subnet}"
+    else
+      echo -n "Bitte Subnetz manuell eingeben (z. B. 192.168.178.0/24): "
+      read -r user_subnet
+
+      if [[ "$user_subnet" =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}/([0-9]|[1-2][0-9]|3[0-2])$ ]]; then
+        advertise_arg="--advertise-routes=${user_subnet}"
+      else
+        echo "⚠️ Ungültiges Subnetz – Subnet-Routing wird übersprungen."
+      fi
+    fi
+  fi
+
+  # Exit Node abfragen
+  echo -n "Als Exit Node fungieren? (j/n): "
+  read -r exitnode_answer
+  [[ "$exitnode_answer" == "j" ]] && exitnode_arg="--advertise-exit-node"
+
+  # DNS aktivieren?
+  echo -n "Tailscale DNS aktivieren? (j/n): "
+  read -r dns_answer
+  [[ "$dns_answer" == "j" ]] && dns_arg="--accept-dns=true" || dns_arg="--accept-dns=false"
+
+  # IPv4/IPv6 Forwarding aktivieren – nur wenn Subnet-Routing aktiv ist
+  if [[ -n "$advertise_arg" ]]; then
+    echo -e "\n🌐 Subnet-Routing aktiv – aktiviere IPv4 & IPv6 Forwarding..."
+    sudo sed -i '/net.ipv4.ip_forward/d' /etc/sysctl.conf
+    sudo sed -i '/net.ipv6.conf.all.forwarding/d' /etc/sysctl.conf
+    echo "net.ipv4.ip_forward=1" | sudo tee -a /etc/sysctl.conf
+    echo "net.ipv6.conf.all.forwarding=1" | sudo tee -a /etc/sysctl.conf
+    sudo sysctl -p
+  fi
+
+  # Tailscale starten
+  echo -e "\n🚀 Starte Tailscale mit deiner Konfiguration..."
+  sudo tailscale up $advertise_arg $exitnode_arg $dns_arg
+
+  echo -e "\n✅ Tailscale wurde gestartet. Jetzt ggf. im Browser autorisieren."
+else
+  echo "⏩ Tailscale wird nicht installiert."
 fi
+
 
 # --- DynDNS mit ipv64.net ---
 echo -n "Möchtest du DynDNS mit ipv64.net einrichten? (j/n): "
@@ -341,5 +392,5 @@ fi
 [[ "$portainer_install" == "j" && "$start_portainer" == "j" ]] && echo -e "🟢 Portainer läuft unter https://${ip_address}:9443"
 [[ "$vdsm_antwort" == "j" && "$start_vdsm" == "j" ]] && echo -e "🟢 VDSM läuft unter http://${ip_address}:5000"
 [[ "$adguard_install" == "j" && "$start_adguard" == "j" ]] && echo -e "🟢 AdGuard läuft unter http://${ip_address}:3000"
-[[ "$tailscale_install" == "j" ]] && echo -e "🟢 Tailscale läuft $( [[ -n "$user_subnet" ]] && echo "| Subnet: $user_subnet" ) $( [[ "$exitnode_answer" == "j" ]] && echo "| Exit Node" ) $( [[ "$dns_answer" == "j" ]] && echo "| DNS aktiv" || echo "| DNS aus" )"
+[[ "$tailscale_install" == "j" ]] && echo -e "🟢 Tailscale läuft $( [[ -n "$advertise_arg" ]] && echo "| Subnet Routing aktiv" ) $( [[ "$exitnode_answer" == "j" ]] && echo "| Exit Node" ) $( [[ "$dns_answer" == "j" ]] && echo "| DNS aktiv" || echo "| DNS aus" )"
 [[ "$dyndns_answer" == "j" ]] && echo -e "🔁 DynDNS aktiv für ${ipv64_domain} (alle ${ipv64_interval} Min) → $ipv64_script_path"

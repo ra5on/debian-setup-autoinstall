@@ -21,10 +21,7 @@ Features
 
 ---
 
-### ✅ Korrekt für die Beispiel-Zusammenfassung:
-
-```markdown
-### Beispielhafte Zusammenfassung:
+### 🧾 Beispielhafte Zusammenfassung:
 
 ```text
 ╔════════════════════════════════════╗
@@ -41,7 +38,6 @@ Features
 
 ## 🛠️ Installation (manuell)
 
-```bash
 nano setup.sh
 # Dann den Inhalt des Scripts von GitHub kopieren und in nano einfügen
 # Datei speichern mit Ctrl + O, schließen mit Ctrl + X

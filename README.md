@@ -1,7 +1,7 @@
 ## Dieses Shell-Script richtet einen Debian-Server automatisiert und interaktiv ein – mit Fokus auf Heimserver, Docker, Tailscale, VDSM, ipv64.net und mehr.
 
 
-## ⚠️ Aktuell ist dieses Setup-Script nur für Systeme mit ARM64-Architektur geeignet, da Docker und Docker Compose bisher nur dort getestet bzw. eingebunden wurden. Eine kompatible Lösung für AMD64 ist geplant.
+## ⚠️ Dieses Setup-Script ist nur für Systeme mit ARM64-Architektur geeignet.
 
 ## Features
 

@@ -38,6 +38,30 @@ Script Starten
 ./setup.sh
 ```
 ---
+
+## 🧰 Erklärung: Script ausführbar machen & starten
+
+Wenn du das Script heruntergeladen oder mit `nano` erstellt hast, musst du es zunächst **ausführbar machen**, damit du es direkt starten kannst.
+
+### 🔹 1. Rechte setzen mit `chmod +x`
+
+```bash
+chmod +x setup.sh
+```
+
+Dieser Befehl macht das Script „ausführbar“. Ohne das würdest du beim Start eine Fehlermeldung bekommen wie: `Permission denied`.
+
+### 🔹 2. Script starten
+
+```bash
+./setup.sh
+```
+
+Das `./` bedeutet: **"führe die Datei im aktuellen Ordner aus"**.  
+Du musst es so schreiben, da der aktuelle Ordner (.) normalerweise nicht automatisch im Suchpfad liegt.
+
+---
+
 ## 🧾 Beispielhafte Zusammenfassung:
 
 ```

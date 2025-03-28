@@ -23,7 +23,21 @@
 
 
 ---
+## 🛠️ Installation (manuell)
 
+Script herunterladen
+```
+wget https://raw.githubusercontent.com/ra5on/debian-setup-autoinstall/refs/heads/main/setup.sh
+```
+Script ausführbar machen
+```
+chmod +x setup.sh
+```
+Script Starten
+```
+./setup.sh
+```
+---
 ## 🧾 Beispielhafte Zusammenfassung:
 
 ```
@@ -37,19 +51,6 @@
 ✅ Docker Compose installiert
 🟢 Portainer läuft unter https://192.168.x.x:9443
 🔁 DynDNS aktiv für beispiel.ipv64.net (alle 5 Min)
-```
-
-## 🛠️ Installation (manuell)
-```
-nano setup.sh
-```
-Dann den Inhalt des Scripts von GitHub kopieren und einfügen
-Datei speichern mit Ctrl + O, schließen mit Ctrl + X
-```
-chmod +x setup.sh
-```
-```
-./setup.sh
 ```
 
 ## Voraussetzungen
